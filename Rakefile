@@ -26,7 +26,12 @@ namespace :seevogh do
       "meetingType" => 0,
       "meetingDuration" => 2,
       "meetingNbrParticipants" => 50,
-      "meetingQuality" => 3
+      "meetingQuality" => 3,
+      "optionRecording" => 1,
+      "optionH232sip" => 3,
+      "optionAudio" => 4,
+      "optionVideo" => 4,
+      "optionAlias" => "iron4idaho"
     }
 
     puts resp.body
