@@ -25,7 +25,7 @@ meeting_id_json = conn.post GET_MEETING_ID_PATH, {
   "optionAlias" => meeting_name
 }
 
-meeting_id = JSON.parse(meeting_id_json)["meetingId"]
+meeting_id = JSON.parse(meeting_id_json.body)["meetingId"]
 
 resp = conn.post START_PATH, {
   "apiLogin" => CONFIG['login'],
@@ -33,5 +33,5 @@ resp = conn.post START_PATH, {
   "optionAlias" => meeting_id
 }
 
-status = JSON.parse(resp)["status"]
+status = JSON.parse(resp.body)["status"]
 puts "Meeting start status: #{ok}"
