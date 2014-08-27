@@ -21,19 +21,22 @@ namespace :seevogh do
     resp = conn.post API_PATH, {
       "apiLogin" => CONFIG['login'],
       "apiPassword" => CONFIG['password'],
-      "meetingPwd" => "1234",
-      "meetingName" => "SeeVoghTest",
+      "meetingPwd" => "RCS2014-mod",
+      "meetingName" => "Recurring-test",
       "meetingType" => 0,
-      "meetingDuration" => 2,
-      "meetingNbrParticipants" => 50,
+      "meetingDuration" => 1,
+      "meetingNbrParticipants" => 10,
       "meetingQuality" => 3,
+      "meetingAccessCode" => "RCS2014",
       "optionRecording" => 1,
       "optionH232sip" => 3,
       "optionAudio" => 4,
       "optionVideo" => 4,
-      "optionAlias" => "iron4idaho"
+      "optionAlias" => "Recurring-test"
     }
 
-    puts resp.body
+    File.open("meetings/Recurring-test.json", "w") do |f|
+      f.write resp.body
+    end
   end
 end
