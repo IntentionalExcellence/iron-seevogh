@@ -35,8 +35,6 @@ namespace :seevogh do
       "optionAlias" => "Recurring-test"
     }
 
-    File.open("meetings/Recurring-test.json", "w") do |f|
-      f.write resp.body
-    end
+    puts resp.body
   end
 end
