@@ -9,6 +9,7 @@ CONFIG = YAML.load_file('config.yml')
 API_URL = 'https://seevogh.com/'
 ACTIVE_PATH = 'api/reporting/getActivMeetings'
 PAST_PATH = 'api/reporting/getPastMeetings'
+STATUS_PATH= "api/meeting/status"
 
 def past?
   ARGV[1] == "--past"
@@ -20,7 +21,18 @@ conn = Faraday.new(url: API_URL) do |faraday|
   faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
 end
 
-resp = conn.post past? ? PAST_PATH : ACTIVE_PATH, {
-  "apiLogin" => CONFIG['login'],
-  "apiPassword" => CONFIG['password']
-}
+if past? || ARGV[1].nil?
+  resp = conn.post past? ? PAST_PATH : ACTIVE_PATH, {
+    "apiLogin" => CONFIG['login'],
+    "apiPassword" => CONFIG['password']
+  }
+else
+  resp = conn.post STATUS_PATH, {
+    "apiLogin" => CONFIG['login'],
+    "apiPassword" => CONFIG['password'],
+    "meetingId" => ARGV[1]
+  }
+end
+
+
+puts resp.body
