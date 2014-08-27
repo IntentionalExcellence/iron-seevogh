@@ -1,0 +1,26 @@
+#!/usr/bin/ruby
+require 'rubygems'
+require 'bundler/setup'
+require 'json'
+require 'yaml'
+require 'faraday'
+
+CONFIG = YAML.load_file('config.yml')
+API_URL = 'https://seevogh.com/'
+ACTIVE_PATH = 'api/reporting/getActivMeetings'
+PAST_PATH = 'api/reporting/getPastMeetings'
+
+def past?
+  ARGV[1] == "--past"
+end
+
+conn = Faraday.new(url: API_URL) do |faraday|
+  faraday.request  :url_encoded             # form-encode POST params
+  faraday.response :logger                  # log requests to STDOUT
+  faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+end
+
+resp = conn.post past? ? PAST_PATH : ACTIVE_PATH, {
+  "apiLogin" => CONFIG['login'],
+  "apiPassword" => CONFIG['password']
+}
