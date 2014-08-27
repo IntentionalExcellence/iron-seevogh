@@ -39,7 +39,7 @@ resp = conn.post stop? ? STOP_PATH : START_PATH, {
 }
 
 if stop?
-  resp = conn.post stop? ? STOP_PATH : START_PATH, {
+  resp = conn.post REUSE_PATH, {
     "apiLogin" => CONFIG['login'],
     "apiPassword" => CONFIG['password'],
     "meetingId" => meeting_id,
