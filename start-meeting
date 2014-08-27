@@ -38,6 +38,15 @@ resp = conn.post stop? ? STOP_PATH : START_PATH, {
   "meetingId" => meeting_id
 }
 
+if stop?
+  resp = conn.post stop? ? STOP_PATH : START_PATH, {
+    "apiLogin" => CONFIG['login'],
+    "apiPassword" => CONFIG['password'],
+    "meetingId" => meeting_id,
+    "meetingPwd" => "RCS2014-mod"
+  }
+end
+
 status = JSON.parse(resp.body)["status"]
 puts "Meeting #{stop? ? "stop" : "start"} status: #{status}"
 
