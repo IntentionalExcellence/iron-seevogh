@@ -13,6 +13,10 @@ START_PATH = "api/meeting/start"
 STOP_PATH = "api/meeting/stop"
 GET_MEETING_ID_PATH = "api/meeting/getMeetingId"
 
+def stop?
+  ARGV[1] == "--stop"
+end
+
 conn = Faraday.new(url: API_URL) do |faraday|
   faraday.request  :url_encoded             # form-encode POST params
   faraday.response :logger                  # log requests to STDOUT
@@ -27,11 +31,11 @@ meeting_id_json = conn.post GET_MEETING_ID_PATH, {
 
 meeting_id = JSON.parse(meeting_id_json.body)["meetingId"]
 
-resp = conn.post START_PATH, {
+resp = conn.post stop? ? STOP_PATH : START_PATH, {
   "apiLogin" => CONFIG['login'],
   "apiPassword" => CONFIG['password'],
   "optionAlias" => meeting_id
 }
 
 status = JSON.parse(resp.body)["status"]
-puts "Meeting start status: #{ok}"
+puts "Meeting #{stop? ? "stop" : "start"} status: #{status}"
