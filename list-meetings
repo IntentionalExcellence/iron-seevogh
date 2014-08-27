@@ -10,9 +10,10 @@ API_URL = 'https://seevogh.com/'
 ACTIVE_PATH = 'api/reporting/getActivMeetings'
 PAST_PATH = 'api/reporting/getPastMeetings'
 STATUS_PATH= "api/meeting/status"
+GET_MEETING_ID_PATH = "api/meeting/getMeetingId"
 
 def past?
-  ARGV[1] == "--past"
+  ARGV[0] == "--past"
 end
 
 conn = Faraday.new(url: API_URL) do |faraday|
@@ -21,16 +22,29 @@ conn = Faraday.new(url: API_URL) do |faraday|
   faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
 end
 
-if past? || ARGV[1].nil?
+if past? || ARGV[0].nil?
   resp = conn.post past? ? PAST_PATH : ACTIVE_PATH, {
     "apiLogin" => CONFIG['login'],
     "apiPassword" => CONFIG['password']
   }
 else
+  if ARGV[0].match /^\d+$/
+    meeting_id = ARGV[0]
+  else
+    meeting_id_json = conn.post GET_MEETING_ID_PATH, {
+      "apiLogin" => CONFIG['login'],
+      "apiPassword" => CONFIG['password'],
+      "optionAlias" => meeting_name
+    }
+    meeting_id = JSON.parse(meeting_id_json.body)["meetingId"]
+
+    puts "#{ARGV[0]} translates to #{meeting_id}"
+  end
+
   resp = conn.post STATUS_PATH, {
     "apiLogin" => CONFIG['login'],
     "apiPassword" => CONFIG['password'],
-    "meetingId" => ARGV[1]
+    "meetingId" => meeting_id
   }
 end
 
