@@ -12,6 +12,7 @@ CREATE_PATH = 'api/meeting/create'
 START_PATH = "api/meeting/start"
 STOP_PATH = "api/meeting/stop"
 STATUS_PATH= "api/meeting/status"
+REUSE_PATH= "api/meeting/reuse"
 GET_MEETING_ID_PATH = "api/meeting/getMeetingId"
 
 def stop?
