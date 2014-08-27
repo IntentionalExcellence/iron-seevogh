@@ -1,0 +1,33 @@
+#!/usr/env ruby
+require 'json'
+
+meeting_name = ARGV[0]
+CONFIG = YAML.load_file('config.yml')
+API_URL = 'https://seevogh.com/'
+CREATE_PATH = 'api/meeting/create'
+START_PATH = "api/meeting/start"
+STOP_PATH = "api/meeting/stop"
+GET_MEETING_ID_PATH = "api/meeting/getMeetingId"
+
+conn = Faraday.new(url: API_URL) do |faraday|
+  faraday.request  :url_encoded             # form-encode POST params
+  faraday.response :logger                  # log requests to STDOUT
+  faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+end
+
+meeting_id_json = conn.post GET_MEETING_ID_PATH, {
+  "apiLogin" => CONFIG['login'],
+  "apiPassword" => CONFIG['password'],
+  "optionAlias" => meeting_name
+}
+
+meeting_id = JSON.parse(meeting_id_json)["meetingId"]
+
+resp = conn.post START_PATH, {
+  "apiLogin" => CONFIG['login'],
+  "apiPassword" => CONFIG['password'],
+  "optionAlias" => meeting_id
+}
+
+status = JSON.parse(resp)["status"]
+puts "Meeting start status: #{ok}"
