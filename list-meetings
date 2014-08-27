@@ -34,7 +34,7 @@ else
     meeting_id_json = conn.post GET_MEETING_ID_PATH, {
       "apiLogin" => CONFIG['login'],
       "apiPassword" => CONFIG['password'],
-      "optionAlias" => meeting_name
+      "optionAlias" => ARGV[0]
     }
     meeting_id = JSON.parse(meeting_id_json.body)["meetingId"]
 
