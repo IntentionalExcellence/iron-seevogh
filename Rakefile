@@ -32,7 +32,7 @@ namespace :seevogh do
       "optionH232sip" => 3,
       "optionAudio" => 4,
       "optionVideo" => 4,
-      "optionAlias" => "Recurring-test"
+      "optionAlias" => "RecurringTest"
     }
 
     puts resp.body
