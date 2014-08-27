@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
+require 'rubygems'
+require 'bundler/setup'
 require 'json'
 require 'yaml'
+require 'faraday'
 
 meeting_name = ARGV[0]
 CONFIG = YAML.load_file('config.yml')
